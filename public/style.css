@@ -1,0 +1,244 @@
+:root {
+  font-family: "Ubunutu Mono", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: hsl(240, 6%, 93%);
+  cursor: default;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+.edit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  text-transform: uppercase;
+  padding: 5px 5px;
+}
+button:disabled,
+.edit-button:disabled {
+  cursor: default;
+}
+button:disabled .edit-icon,
+.edit-button:disabled .edit-icon {
+  background-color: hsl(251, 2%, 97%);
+}
+button:disabled .edit-icon:hover,
+.edit-button:disabled .edit-icon:hover {
+  background-color: hsl(251, 2%, 97%);
+}
+button .edit-icon,
+.edit-button .edit-icon {
+  mask: url(../assets/edit_icon.svg) no-repeat center/contain;
+  width: 30px;
+  height: 30px;
+  background-color: hsl(251, 22%, 61%);
+}
+button .edit-icon:hover,
+.edit-button .edit-icon:hover {
+  background-color: hsl(70, 92%, 13%);
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1920px;
+  min-width: 380px;
+  padding: 25px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.main-header {
+  background: linear-gradient(to right, hsl(251, 75%, 41%), hsl(249, 41%, 16%));
+  color: hsl(240, 15%, 95%);
+  padding: 12px 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.main-header .logo {
+  display: flex;
+}
+.main-header img {
+  width: 55px;
+  height: 55px;
+  content-visibility: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-header h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.main-header .menu-profile {
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+  background-color: hsl(240, 6%, 93%);
+  border: 3px solid hsl(240, 64%, 43%);
+  content-visibility: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-footer {
+  margin-top: 20px;
+  margin-bottom: 0;
+  background: linear-gradient(to left, hsl(251, 5%, 41%), hsl(249, 5%, 26%));
+  color: hsl(240, 15%, 95%);
+  border-radius: 10px;
+  padding: 12px 25px;
+  display: flex;
+  flex-direction: row;
+}
+
+.participants-page {
+  background-color: hsl(0, 0%, 100%);
+  padding: 12px 25px;
+  border-radius: 10px;
+}
+.participants-page__menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.participants-page__menu h1,
+.participants-page__menu p {
+  margin: 0;
+}
+.participants-page__menu .event-name {
+  font-size: 1.35rem;
+  background: linear-gradient(to right, hsl(251, 72%, 41%), hsl(70, 62%, 43%));
+  border: 3px solid hsl(250, 57%, 22%);
+  min-width: 300px;
+  height: 15px;
+  padding: 12px 25px;
+  background-color: hsl(240, 6%, 93%);
+  font-weight: 400;
+  border-radius: 10px;
+  color: hsl(240, 15%, 95%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.table-ctn {
+  min-height: 65vh;
+}
+
+.table {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  font-size: 1.5rem;
+  color: hsl(251, 33%, 23%);
+  border-collapse: collapse;
+}
+.table tr,
+.table label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.table tr .checkbox-ctn,
+.table label .checkbox-ctn {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table tr .checkbox-ctn input:hover,
+.table label .checkbox-ctn input:hover {
+  background-color: hsl(240, 6%, 73%);
+}
+.table tr input[type=checkbox],
+.table label input[type=checkbox] {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  background-color: hsl(251, 2%, 85%);
+  border-radius: 8px;
+  appearance: none;
+  outline: none;
+}
+.table tr input[type=checkbox]:checked,
+.table label input[type=checkbox]:checked {
+  background-size: cover;
+}
+.table tr input[type=checkbox]:not(:disabled):checked,
+.table label input[type=checkbox]:not(:disabled):checked {
+  background-color: hsl(249, 40%, 46%);
+}
+.table tr input[type=checkbox]:disabled,
+.table label input[type=checkbox]:disabled {
+  background-color: hsl(251, 2%, 97%);
+}
+.table tr input[type=checkbox]:disabled:checked,
+.table label input[type=checkbox]:disabled:checked {
+  background-color: hsl(6, 81%, 85%);
+}
+.table thead {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+.table thead tr {
+  position: relative;
+}
+.table thead tr::after {
+  content: "";
+  width: 100%;
+  border: 2px solid hsl(240, 6%, 96%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.table tbody tr {
+  position: relative;
+  cursor: default;
+}
+.table tbody tr::after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: hsl(240, 6%, 96%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.table tbody tr:hover {
+  background-color: hsl(240, 6%, 97%);
+}
+.table tbody tr.checked {
+  background-color: hsl(70, 77%, 91%);
+}
+.table tbody r:hover {
+  background-color: hsl(240, 6%, 93%);
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=style.css.map */
