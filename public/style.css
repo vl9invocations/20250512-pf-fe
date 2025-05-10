@@ -9,6 +9,7 @@
 
 * {
   box-sizing: border-box;
+  transition: all 95ms ease-in-out;
 }
 
 button,
@@ -50,7 +51,7 @@ body {
   margin: 0 auto;
   padding: 0;
   max-width: 1920px;
-  min-width: 380px;
+  min-width: 0px;
   padding: 25px;
 }
 
@@ -60,6 +61,41 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.btn-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btn-row .add-btn {
+  background-color: hsl(42, 37%, 93%);
+  border-radius: 8px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  margin: 10px 0;
+  width: 100%;
+  color: hsl(251, 33%, 23%);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.btn-row .add-btn:hover {
+  background-color: hsl(42, 67%, 83%);
+}
+.btn-row .remove-btn {
+  background-color: hsl(0, 90%, 75%);
+  border-radius: 8px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  width: 100%;
+  color: hsl(251, 33%, 23%);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.btn-row .remove-btn:hover {
+  background-color: hsl(0, 90%, 60%);
 }
 
 .main-header {
@@ -158,25 +194,39 @@ body {
   color: hsl(251, 33%, 23%);
   border-collapse: collapse;
 }
-.table tr,
 .table label {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.table tr {
+  display: grid;
+  grid-template-columns: 50px repeat(3, minmax(380px, 1fr)) 50px;
+  overflow: hidden;
+  justify-items: center;
   align-items: center;
 }
-.table tr .checkbox-ctn,
-.table label .checkbox-ctn {
+.table tr .checkbox-ctn {
   padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.table tr .checkbox-ctn input:hover,
-.table label .checkbox-ctn input:hover {
+.table tr .checkbox-ctn input:hover {
   background-color: hsl(240, 6%, 73%);
 }
-.table tr input[type=checkbox],
-.table label input[type=checkbox] {
+.table tr .no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 50px 100px;
+  color: hsl(240, 6%, 73%);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.table tr input[type=checkbox] {
   cursor: pointer;
   box-sizing: border-box;
   width: 25px;
@@ -186,20 +236,16 @@ body {
   appearance: none;
   outline: none;
 }
-.table tr input[type=checkbox]:checked,
-.table label input[type=checkbox]:checked {
+.table tr input[type=checkbox]:checked {
   background-size: cover;
 }
-.table tr input[type=checkbox]:not(:disabled):checked,
-.table label input[type=checkbox]:not(:disabled):checked {
+.table tr input[type=checkbox]:not(:disabled):checked {
   background-color: hsl(249, 40%, 46%);
 }
-.table tr input[type=checkbox]:disabled,
-.table label input[type=checkbox]:disabled {
+.table tr input[type=checkbox]:disabled {
   background-color: hsl(251, 2%, 97%);
 }
-.table tr input[type=checkbox]:disabled:checked,
-.table label input[type=checkbox]:disabled:checked {
+.table tr input[type=checkbox]:disabled:checked {
   background-color: hsl(6, 81%, 85%);
 }
 .table thead {
@@ -207,6 +253,7 @@ body {
   font-size: 1.2rem;
 }
 .table thead tr {
+  height: 3.6rem;
   position: relative;
 }
 .table thead tr::after {
@@ -220,6 +267,9 @@ body {
 .table tbody tr {
   position: relative;
   cursor: default;
+}
+.table tbody tr:nth-child(odd) {
+  background-color: hsl(240, 2%, 98%);
 }
 .table tbody tr::after {
   content: "";
@@ -236,9 +286,17 @@ body {
 .table tbody tr.checked {
   background-color: hsl(70, 77%, 91%);
 }
-.table tbody r:hover {
-  background-color: hsl(240, 6%, 93%);
-  cursor: pointer;
+.table tbody tr td {
+  overflow: hidden;
+}
+
+@media (max-width: 1030px) {
+  .table tr {
+    display: grid;
+    grid-template-columns: 50px repeat(3, minmax(200px, 1fr)) 50px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
