@@ -32,6 +32,16 @@ body {
   display: none;
 }
 
+.error {
+  width: 100%;
+  text-align: center;
+  background-color: hsl(0, 72%, 62%);
+  color: white;
+  padding: 5px;
+  border-radius: 8px;
+  margin: 0 0 15px;
+}
+
 .main-header {
   background: linear-gradient(to right, hsl(251, 75%, 41%), hsl(249, 41%, 16%));
   color: hsl(240, 15%, 95%);
