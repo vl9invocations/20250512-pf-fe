@@ -1,0 +1,39 @@
+.participants-page {
+  background-color: hsl(0, 0%, 100%);
+  padding: 12px 25px;
+  border-radius: 10px;
+
+  &__menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    .event-name {
+      font-size: 1.35rem;
+      background: linear-gradient(
+        to right,
+        hsl(251, 72%, 41%),
+        hsl(70, 62%, 43%)
+      );
+      border: 3px solid hsl(250, 57%, 22%);
+      min-width: 300px;
+      height: 15px;
+      padding: 12px 25px;
+      background-color: hsl(240, 6%, 93%);
+      font-weight: 400;
+      border-radius: 10px;
+      color: hsl(240, 15%, 95%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+  }
+}

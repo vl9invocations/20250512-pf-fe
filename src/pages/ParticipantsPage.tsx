@@ -1,4 +1,4 @@
-import ParticipantsTable from "../components/ParticipantsTable"
+import ParticipantsTable from "../components/ParticipantsTable/ParticipantsTable"
 
 function ParticipantsPage() {
   return (
