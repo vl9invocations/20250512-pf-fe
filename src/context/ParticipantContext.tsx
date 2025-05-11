@@ -1,6 +1,9 @@
-import React, { createContext, useState, useContext, useCallback } from "react";
+import React, { useState, useCallback, createContext, useContext } from "react";
 import { apiCommunicationServices } from "../services/apiCommunicationServices";
 import type { Participant } from "../types/Participant";
+
+
+const ParticipantContext = createContext<ParticipantContext | undefined>(undefined);
 
 interface ParticipantContext {
     participants: Participant[];
@@ -11,8 +14,6 @@ interface ParticipantContext {
     deleteParticipants: (ids: number[]) => Promise<void>;
     editParticipant: (id: number | undefined, updatedData: Omit<Participant, "id">) => Promise<void>;
 }
-
-const ParticipantContext = createContext<ParticipantContext | undefined>(undefined);
 
 export const ParticipantContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [participants, setParticipants] = useState<Participant[]>([]);
@@ -95,7 +96,9 @@ export const ParticipantContextProvider: React.FC<{ children: React.ReactNode }>
     );
 };
 
-export const useParticipantContext = (): ParticipantContext => {
+
+
+export const useParticipantContext = () => {
     const context = useContext(ParticipantContext);
     if (!context) {
         throw new Error("useParticipantContext must be used within a ParticipantContextProvider");

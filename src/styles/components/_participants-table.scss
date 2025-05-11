@@ -21,9 +21,9 @@
     display: grid;
     grid-template-columns: 50px repeat(3, 1fr) 50px;
     overflow: hidden;
-    // justify-content: space-between;
     justify-items: stretch;
     align-items: center;
+    min-height: 65px;
 
     .checkbox-ctn {
       padding: 5px;
@@ -54,36 +54,35 @@
       height: 25px;
       background-color: hsl(251, 2%, 85%);
       border-radius: 8px;
-
       appearance: none;
       outline: none;
-    }
 
-    input[type="checkbox"]:checked {
-      background-size: cover;
-      // padding: 2px;
-    }
+      &:checked {
+        background-size: cover;
+      }
 
-    input[type="checkbox"]:not(:disabled):checked {
-      // background-color: hwb(6 18% 9%);
-      background-color: hsl(249, 40%, 46%);
-    }
+      &:not(:disabled):checked {
+        background-color: hsl(249, 40%, 46%);
+      }
 
-    input[type="checkbox"]:disabled {
-      background-color: hsl(251, 2%, 97%);
-    }
+      &:disabled {
+        background-color: hsl(251, 2%, 97%);
+      }
 
-    input[type="checkbox"]:disabled:checked {
-      background-color: hsl(6, 81%, 85%);
+      &:disabled:checked {
+        background-color: hsl(6, 81%, 85%);
+      }
     }
   }
 
   thead {
     text-transform: uppercase;
     font-size: 1.2rem;
+
     tr {
       height: 3.6rem;
       position: relative;
+
       &::after {
         content: "";
         width: 100%;
@@ -120,8 +119,8 @@
 
       &.checked {
         background-color: hsl(70, 77%, 91%);
-        // background-color: hsl(65, 72%, 85%);
       }
+
       td {
         overflow: hidden;
       }

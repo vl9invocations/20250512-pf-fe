@@ -3,6 +3,12 @@
   padding: 12px 25px;
   border-radius: 10px;
 
+  &__right-menu {
+    display: flex;
+    flex-direction: ROW;
+    align-items: center;
+  }
+
   &__menu {
     display: flex;
     flex-direction: row;

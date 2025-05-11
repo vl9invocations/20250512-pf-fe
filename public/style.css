@@ -107,6 +107,7 @@ body {
   overflow: hidden;
   justify-items: stretch;
   align-items: center;
+  min-height: 65px;
 }
 .table tr .checkbox-ctn {
   padding: 5px;
@@ -279,8 +280,10 @@ button:disabled .edit-icon:hover,
 }
 button .edit-icon,
 button .save-icon,
+button .refresh-icon,
 .edit-button .edit-icon,
-.edit-button .save-icon {
+.edit-button .save-icon,
+.edit-button .refresh-icon {
   mask: url(../assets/edit_icon.svg) no-repeat center/contain;
   width: 30px;
   height: 30px;
@@ -288,13 +291,19 @@ button .save-icon,
 }
 button .edit-icon:hover,
 button .save-icon:hover,
+button .refresh-icon:hover,
 .edit-button .edit-icon:hover,
-.edit-button .save-icon:hover {
+.edit-button .save-icon:hover,
+.edit-button .refresh-icon:hover {
   background-color: hsl(70, 92%, 13%);
 }
 button .save-icon,
 .edit-button .save-icon {
   mask: url(../assets/save_icon.svg) no-repeat center/contain;
+}
+button .refresh-icon,
+.edit-button .refresh-icon {
+  mask: url(../assets/refresh_icon.svg) no-repeat center/contain;
 }
 
 .btn-row {
@@ -336,6 +345,11 @@ button .save-icon,
   background-color: hsl(0, 0%, 100%);
   padding: 12px 25px;
   border-radius: 10px;
+}
+.participants-page__right-menu {
+  display: flex;
+  flex-direction: ROW;
+  align-items: center;
 }
 .participants-page__menu {
   display: flex;
@@ -394,6 +408,11 @@ button .save-icon,
   .participants-page__left-menu {
     text-align: center;
     margin-bottom: 20px;
+  }
+  .participants-page__right-menu {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .table thead {
     visibility: collapse;

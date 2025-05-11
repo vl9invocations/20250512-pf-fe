@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParticipantContext } from "../../context/ParticipantContext";
+import { useParticipantContext } from "../../context/participantContext";
 
 const ParticipantsTableForm = () => {
     const { addParticipant } = useParticipantContext();

@@ -4,7 +4,7 @@ import formatDate from "../../utils/dateFormatter";
 import calculateAge from "../../utils/ageCalculator";
 
 import ParticipantsTableForm from "./ParticipantsTableForm";
-import { useParticipantContext } from "../../context/ParticipantContext";
+import { useParticipantContext } from "../../context/participantContext";
 import type { Participant } from "../../types/Participant";
 
 const ParticipantsTable: React.FC = () => {

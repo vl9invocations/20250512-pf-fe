@@ -21,7 +21,8 @@ button,
     }
   }
   .edit-icon,
-  .save-icon {
+  .save-icon,
+  .refresh-icon {
     mask: (url(../assets/edit_icon.svg) no-repeat center / contain);
     width: 30px;
     height: 30px;
@@ -34,6 +35,9 @@ button,
 
   .save-icon {
     mask: (url(../assets/save_icon.svg) no-repeat center / contain);
+  }
+  .refresh-icon {
+    mask: (url(../assets/refresh_icon.svg) no-repeat center / contain);
   }
 }
 
