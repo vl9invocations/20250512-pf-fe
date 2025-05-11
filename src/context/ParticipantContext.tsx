@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from "react";
+import { apiCommunicationServices } from "../services/apiCommunicationServices";
 import type { Participant } from "../types/Participant";
 
 interface ParticipantContext {
@@ -8,6 +9,7 @@ interface ParticipantContext {
     getParticipants: () => Promise<void>;
     addParticipant: (participant: Omit<Participant, "id">) => Promise<void>;
     deleteParticipants: (ids: number[]) => Promise<void>;
+    editParticipant: (id: number | undefined, updatedData: Omit<Participant, "id">) => Promise<void>;
 }
 
 const ParticipantContext = createContext<ParticipantContext | undefined>(undefined);
@@ -56,9 +58,37 @@ export const ParticipantContextProvider: React.FC<{ children: React.ReactNode }>
         }
     }, [getParticipants]);
 
+    const editParticipant = useCallback(
+        async (id: number | undefined, updatedData: Omit<Participant, "id">) => {
+            if (id === undefined) {
+                setError("Participant ID is undefined");
+                return;
+            }
+            setLoading(true);
+            setError(null);
+            try {
+                await apiCommunicationServices.editParticipant(id, updatedData);
+                await getParticipants();
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "Unknown error");
+            } finally {
+                setLoading(false);
+            }
+        },
+        [getParticipants]
+    );
+
     return (
         <ParticipantContext.Provider
-            value={{ participants, loading, error, getParticipants, addParticipant, deleteParticipants }}
+            value={{
+                participants,
+                loading,
+                error,
+                getParticipants,
+                addParticipant,
+                deleteParticipants,
+                editParticipant,
+            }}
         >
             {children}
         </ParticipantContext.Provider>
@@ -71,48 +101,4 @@ export const useParticipantContext = (): ParticipantContext => {
         throw new Error("useParticipantContext must be used within a ParticipantContextProvider");
     }
     return context;
-};
-
-import axios from "axios";
-import type { ParticipantsResponse } from "../types/Participant";
-
-const apiUrl: string | undefined = import.meta.env.VITE_API_URL;
-
-export const apiCommunicationServices = {
-    getParticipants: async (): Promise<Participant[]> => {
-        const response = await axios.get<ParticipantsResponse>(`${apiUrl}/participants`, {
-            headers: { "Content-Type": "application/json" },
-        });
-        if (!response.data.data) {
-            throw new Error(response.data.message || "Failed to fetch participants");
-        }
-        return response.data.data;
-    },
-
-    editParticipant: async (id: number, updatedParticipant: Omit<Participant, "id">): Promise<Participant> => {
-        const response = await axios.put(`${apiUrl}/participants/${id}`, updatedParticipant, {
-            headers: { "Content-Type": "application/json" },
-        });
-        if (!response.data.data) {
-            throw new Error(response.data.message || "Failed to edit participant");
-        }
-        return response.data.data;
-    },
-
-    addParticipant: async (newParticipant: Omit<Participant, "id">): Promise<Participant> => {
-        const response = await axios.post(`${apiUrl}/participants`, newParticipant, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return response.data.data;
-    },
-
-    deleteParticipants: async (ids: number[]): Promise<void> => {
-        await Promise.all(
-            ids.map((id) =>
-                axios.delete(`${apiUrl}/participants/${id}`, {
-                    headers: { "Content-Type": "application/json" },
-                })
-            )
-        );
-    },
 };

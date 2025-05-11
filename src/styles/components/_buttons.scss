@@ -20,7 +20,8 @@ button,
       }
     }
   }
-  .edit-icon {
+  .edit-icon,
+  .save-icon {
     mask: (url(../assets/edit_icon.svg) no-repeat center / contain);
     width: 30px;
     height: 30px;
@@ -29,6 +30,10 @@ button,
     &:hover {
       background-color: hsl(70, 92%, 13%);
     }
+  }
+
+  .save-icon {
+    mask: (url(../assets/save_icon.svg) no-repeat center / contain);
   }
 }
 

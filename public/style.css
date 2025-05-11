@@ -247,7 +247,6 @@ body {
   border: 2px solid hsl(240, 6%, 93%);
   font-size: 1.2rem;
   color: hsl(251, 33%, 23%);
-  font-weight: 700;
 }
 .editing input:focus {
   outline: none;
@@ -279,15 +278,23 @@ button:disabled .edit-icon:hover,
   background-color: hsl(251, 2%, 97%);
 }
 button .edit-icon,
-.edit-button .edit-icon {
+button .save-icon,
+.edit-button .edit-icon,
+.edit-button .save-icon {
   mask: url(../assets/edit_icon.svg) no-repeat center/contain;
   width: 30px;
   height: 30px;
   background-color: hsl(251, 22%, 61%);
 }
 button .edit-icon:hover,
-.edit-button .edit-icon:hover {
+button .save-icon:hover,
+.edit-button .edit-icon:hover,
+.edit-button .save-icon:hover {
   background-color: hsl(70, 92%, 13%);
+}
+button .save-icon,
+.edit-button .save-icon {
+  mask: url(../assets/save_icon.svg) no-repeat center/contain;
 }
 
 .btn-row {

@@ -2,43 +2,43 @@ import { useState, useEffect } from "react";
 
 import formatDate from "../../utils/dateFormatter";
 import calculateAge from "../../utils/ageCalculator";
+
+import ParticipantsTableForm from "./ParticipantsTableForm";
+import { useParticipantContext } from "../../context/ParticipantContext";
 import type { Participant } from "../../types/Participant";
 
-import { apiCommunicationServices } from "../../services/apiCommunicationServices";
-import ParticipantsTableForm from "./ParticipantsTableForm";
-
-
-const ParticipantsTable = () => {
-    const [participants, setParticipants] = useState<Participant[]>([]);
+const ParticipantsTable: React.FC = () => {
     const [checkedParticipants, setCheckedParticipants] = useState<number[]>([]);
-    const [editingParticipant, setEditingParticipant] = useState<number[]>([]);
-    const [inputFormVisiblity, setInputFormVisiblity] = useState<boolean>(false);
+    const [editingParticipantId, setEditingParticipantId] = useState<number | null>(null);
+    const [inputFormVisibility, setInputFormVisibility] = useState<boolean>(false);
 
-
+    const { participants, getParticipants, deleteParticipants, editParticipant } = useParticipantContext();
 
     useEffect(() => {
-        apiCommunicationServices.getParticipants(setParticipants);
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-            const row = checkbox.closest('tr');
-            if (row) {
-                if (checkedParticipants.includes(Number(checkbox.id.split('-')[1]))) {
-                    row.classList.add('checked');
-                } else {
-                    row.classList.remove('checked');
-                }
-            }
-        });
-    }, [checkedParticipants]);
+        getParticipants();
+    }, [getParticipants]);
 
-    const handleCheckboxChange = (id: number) => () => {
-        setCheckedParticipants((prev) => {
-            if (prev.includes(id)) {
-                return prev.filter((participantId) => participantId !== id);
-            } else {
-                return [...prev, id];
-            }
-        });
+    const handleCheckboxChange = (id: number): void => {
+        setCheckedParticipants((prev) =>
+            prev.includes(id) ? prev.filter((participantId) => participantId !== id) : [...prev, id]
+        );
+    };
+
+    const handleDelete = async (): Promise<void> => {
+        await deleteParticipants(checkedParticipants);
+        setCheckedParticipants([]);
+    };
+
+    const handleEditToggle = (id: number): void => {
+        setEditingParticipantId((prev) => (prev === id ? null : id));
+    };
+
+    const handleEditSave = async (
+        id: number,
+        updatedData: { name: string; email: string; birthdate: string }
+    ): Promise<void> => {
+        await editParticipant(id, updatedData);
+        setEditingParticipantId(null);
     };
 
     return (
@@ -55,82 +55,125 @@ const ParticipantsTable = () => {
                 </thead>
                 <tbody>
                     {participants.length > 0 ? (
-                        participants.map((participant, index) => {
-
-                            if (editingParticipant.includes(participant.id)) {
-                                return (
-                                    <tr key={index} className="table-row editing">
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <input id="edited-name" type="text" defaultValue={participant.name} />
-                                        </td>
-                                        <td>
-                                            <input id="edited-email" type="email" defaultValue={participant.email} />
-                                        </td>
-                                        <td>
-                                            <input id="edited-birthdate" type="date" defaultValue={formatDate(participant.birthdate, 'lt-LT')} />
-                                        </td>
-
-                                        <td>
-                                            <button type='submit' className='edit-button' onClick={async () => await apiCommunicationServices.enableEditingParticipant(participant.id, editingParticipant, setParticipants, setEditingParticipant)}>
-                                                <span className='edit-icon'></span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            } else {
-                                return (
-
-                                    <tr key={index} className="table-row">
-                                        <td className='checkbox-ctn'>
-                                            <label htmlFor={"for_deletion-" + participant.id} >
-                                                <input id={"for_deletion-" + participant.id} type="checkbox" onClick={handleCheckboxChange(participant.id)} defaultChecked={checkedParticipants.includes(participant.id)} />
-                                            </label>
-                                        </td>
-                                        <td>{participant.name}</td>
-                                        <td>{participant.email}</td>
-                                        <td>{formatDate(participant.birthdate, 'lt-LT')} ({calculateAge(participant.birthdate)})</td>
-
-                                        <td>
-                                            <button type='submit' className='edit-button' onClick={async () => await apiCommunicationServices.enableEditingParticipant(participant.id, editingParticipant, setParticipants, setEditingParticipant)}>
-                                                <span className='edit-icon'></span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )
-
+                        participants.map((participant: Participant) => {
+                            if (!participant.id) {
+                                // Skip rendering if participant.id is null or undefined
+                                return null;
                             }
+
+                            return (
+                                <tr
+                                    key={participant.id}
+                                    className={`table-row ${editingParticipantId === participant.id ? "editing" : ""}`}
+                                >
+                                    <td className="checkbox-ctn">
+                                        {editingParticipantId !== participant.id && (
+                                            <label htmlFor={`for_deletion-${participant.id}`}>
+                                                <input
+                                                    id={`for_deletion-${participant.id}`}
+                                                    type="checkbox"
+                                                    onChange={() => handleCheckboxChange(participant.id)}
+                                                    checked={checkedParticipants.includes(participant.id)}
+                                                />
+                                            </label>
+                                        )}
+                                    </td>
+                                    {editingParticipantId === participant.id ? (
+                                        <>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    defaultValue={participant.name}
+                                                    onChange={(e) =>
+                                                        (participant.name = e.target.value)
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="email"
+                                                    defaultValue={participant.email}
+                                                    onChange={(e) =>
+                                                        (participant.email = e.target.value)
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="date"
+                                                    defaultValue={formatDate(participant.birthdate, "lt-LT")}
+                                                    onChange={(e) =>
+                                                        (participant.birthdate = e.target.value)
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="edit-button"
+                                                    onClick={() =>
+                                                        handleEditSave(participant.id!, {
+                                                            name: participant.name,
+                                                            email: participant.email,
+                                                            birthdate: participant.birthdate,
+                                                        })
+                                                    }
+                                                >
+                                                    <span className='save-icon'></span>
+                                                </button>
+                                            </td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <td>{participant.name}</td>
+                                            <td>{participant.email}</td>
+                                            <td>
+                                                {formatDate(participant.birthdate, "lt-LT")} (
+                                                {calculateAge(participant.birthdate)})
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="edit-button"
+                                                    onClick={() => handleEditToggle(participant.id!)}
+                                                >
+                                                    <span className='edit-icon'></span>
+                                                </button>
+                                            </td>
+                                        </>
+                                    )}
+                                </tr>
+                            );
                         })
                     ) : (
                         <tr>
                             <td></td>
                             <td></td>
                             <td className="no-data">
-                                Empty
+                                <p>Empty</p>
                             </td>
                             <td></td>
                             <td></td>
                         </tr>
                     )}
-
                 </tbody>
-            </table >
+            </table>
             <div className="btn-row">
-                {inputFormVisiblity && (
-                    <ParticipantsTableForm setParticipants={setParticipants} />
-                )}
-                <button className="add-btn" onClick={() => setInputFormVisiblity((prev) => !prev)}>
-                    {inputFormVisiblity ? "Cancel" : "Add Participant"}
+                {inputFormVisibility && <ParticipantsTableForm />}
+                <button
+                    className="add-btn"
+                    onClick={() => setInputFormVisibility((prev) => !prev)}
+                >
+                    {inputFormVisibility ? "Cancel" : "Add Participant"}
                 </button>
                 {checkedParticipants.length > 0 && (
-                    <button onClick={async () => await apiCommunicationServices.handleDelete(checkedParticipants, setParticipants, setCheckedParticipants)} className="remove-btn">
+                    <button onClick={handleDelete} className="remove-btn">
                         Remove Participant
                     </button>
                 )}
             </div>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
-export default ParticipantsTable
+export default ParticipantsTable;
